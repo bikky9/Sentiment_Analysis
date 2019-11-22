@@ -17,7 +17,8 @@ from tensorflow.python.keras.layers import Embedding
 from tensorflow.python.keras.layers import SeparableConv1D
 from tensorflow.python.keras.layers import MaxPooling1D
 from tensorflow.python.keras.layers import GlobalAveragePooling1D
-
+from tensorflow.python.keras.layers import Bidirectional
+from tensorflow.python.keras.layers import LSTM
 
 def mlp_model(layers, units, dropout_rate, input_shape, num_classes):
     """Creates an instance of a multi-layer perceptron model.
@@ -120,6 +121,15 @@ def sepcnn_model(blocks,
     model.add(Dense(op_units, activation=op_activation))
     return model
 
+def rnn_model(input_shape,  num_classes, num_features, embedding_dim = 64):
+  model = models.Sequential([Embedding(input_dim = num_features,
+                              output_dim = embedding_dim,
+                              input_length = input_shape[0]),
+                            Bidirectional(LSTM(64)),
+                            Dense(64, activation = 'relu')])
+  op_units, op_activation = _get_last_layer_units_and_activation(num_classes)
+  model.add(Dense(op_units, activation = op_activation))
+  return model
 
 def _get_last_layer_units_and_activation(num_classes):
     """Gets the # units and activation function for the last network layer.

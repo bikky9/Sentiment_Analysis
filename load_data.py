@@ -127,7 +127,10 @@ def load_rotten_tomatoes_sentiment_analysis_dataset(data_path,
     # Get the review phrase and sentiment values.
     texts = list(data['Phrase'])
     labels = np.array(data['Sentiment'])
+    texts = texts[:int(len(texts)/2)]
+    labels = labels[:int(len(labels)/2)]
     return _split_training_and_validation_sets(texts, labels, validation_split)
+
 
 
 def load_amazon_reviews_sentiment_analysis_dataset(data_path, seed=123):

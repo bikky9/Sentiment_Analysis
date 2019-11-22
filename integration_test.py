@@ -9,7 +9,8 @@ from __future__ import print_function
 
 import batch_train_sequence_model
 import load_data
-import stats
+# import stats
+import train_rnn_model
 import pytest
 import train_fine_tuned_sequence_model
 import train_ngram_model
@@ -19,6 +20,7 @@ import train_sequence_model
 def test_train_ngram_model():
     data_dir = './data/'
     data = load_data.load_imdb_sentiment_analysis_dataset(data_dir)
+    # data = load_data.load_rotten_tomatoes_sentiment_analysis_dataset(data_dir)
     acc, loss = train_ngram_model.train_ngram_model(data)
     assert acc == pytest.approx(0.91, 0.02)
     assert loss == pytest.approx(0.24, 0.02)
@@ -26,8 +28,7 @@ def test_train_ngram_model():
 
 def test_train_sequence_model():
     data_dir = './data/'
-    # data = load_data.load_rotten_tomatoes_sentiment_analysis_dataset(data_dir)
-    data = stats.vishal()
+    data = load_data.load_rotten_tomatoes_sentiment_analysis_dataset(data_dir)
     acc, loss = train_sequence_model.train_sequence_model(data)
     assert acc == pytest.approx(0.68, 0.02)
     assert loss == pytest.approx(0.82, 0.02)
@@ -51,4 +52,11 @@ def test_batch_train_sequence_model():
     assert acc == pytest.approx(0.61, 0.02)
     assert loss == pytest.approx(0.89, 0.02)
 
-test_train_sequence_model()
+def test_train_rnn_model():
+    data_dir = './data/'
+    data = load_data.load_rotten_tomatoes_sentiment_analysis_dataset(data_dir)
+    acc, loss = train_rnn_model.train_rnn_model(data)
+    assert acc == pytest.approx(0.68, 0.02)
+    assert loss == pytest.approx(0.82, 0.02)
+
+test_train_rnn_model()
